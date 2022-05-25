@@ -3,38 +3,33 @@
 import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
-function PopMovieDetail() {
+function PopSeriesDetail() {
   let params = useParams();
   const [details, setDetails] = useState({
-    original_title: "",
+    title: "",
     overview: "",
-    backdrop_path: "",
     original_language: "",
-    popularity: null,
+    backdrop_path: "",
     runtime: null,
-    tagline: "",
-    genres: [{}],
   });
   useEffect(() => {
-    getMovieDetails();
+    getSeriesDetails();
+    // eslint-disable-next-line
   }, []);
-  const getMovieDetails = async () => {
+  const getSeriesDetails = async () => {
     const API_URL = `https://api.themoviedb.org/3/movie/${params.id}?api_key=ed0c274ddccfadebcca4c73c3088388a`;
     const options = {
       method: "GET",
     };
     const response = await fetch(API_URL, options);
     const data = await response.json();
-
+    console.log(data.overview);
     setDetails({
-      original_title: data.original_title,
-      overview: data.overview,
-      backdrop_path: data.backdrop_path,
+      title: data.title,
       original_language: data.original_language,
-      popularity: data.popularity,
+      backdrop_path: data.backdrop_path,
+      overview: data.overview,
       runtime: data.runtime,
-      tagline: data.tagline,
-      genres: data.genres,
     });
   };
 
@@ -50,18 +45,13 @@ function PopMovieDetail() {
         <div className="movie-details-container">
           <div className="hero-text my-4 px-4">
             <div className="title">
-              <h1>{details.original_title}</h1>
+              <h1>{details.title}</h1>
             </div>
             <div className="d-flex">
               <p className="small-text pr-4">Run Time : {details.runtime}</p>
               <p className="small-text">
                 Language : {details.original_language}
               </p>
-            </div>
-            <div className="genres-container m-3">
-              {details.genres.map((genre) => {
-                return <li key={genre.id}>{genre.name}</li>;
-              })}
             </div>
           </div>
           <div className="movie-overview px-5">
@@ -74,4 +64,4 @@ function PopMovieDetail() {
   );
 }
 
-export default PopMovieDetail;
+export default PopSeriesDetail;
